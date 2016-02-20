@@ -133,7 +133,12 @@ class BupRequestHandler(tornado.web.RequestHandler):
     
     def propfind(self, path):
         return self._process_request(path)
-    
+
+    def decode_argument(self, value, name=None):
+        if name == 'path':
+            return value
+        return super(BupRequestHandler, self).decode_argument(value, name)
+
     # Unimplemented (i.e. impossible with a bup repository at the moment)
     def put(self, name):
         raise web.HTTPError(501)  
@@ -474,7 +479,7 @@ extensions_map.update({
     })
 
 application = tornado.web.Application([
-    (r"(/.*)", BupRequestHandler),
+    (r"(?P<path>/.*)", BupRequestHandler),
 ], **settings)
 
 http_server = tornado.httpserver.HTTPServer(application)
