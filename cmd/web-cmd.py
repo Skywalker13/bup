@@ -274,7 +274,7 @@ class BupRequestHandler(tornado.web.RequestHandler):
                     DAVElement.status("HTTP/1.1 %d %s" % (code,  http_responses[code]))))
         
         # append to the big response
-        response.append(DAVElement.response(DAVElement.href(path), 
+        response.append(DAVElement.response(DAVElement.href(path.decode('utf8')),
                                             *prop_stat))
         
         # descend into child nodes
